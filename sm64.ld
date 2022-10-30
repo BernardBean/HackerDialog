@@ -235,12 +235,14 @@ SECTIONS
       BUILD_DIR/src/newtext*.o(.*bss*);
       BUILD_DIR/src/hvqm*.o(.*bss*);
       BUILD_DIR/src/usb*.o(.*bss*);
-      BUILD_DIR/src/audio*.o(.*bss*);
-#ifdef S2DEX_TEXT_ENGINE
-      lib/libs2d_engine.a:*(.*bss*);
-#endif
-#if defined(ISVPRINT) || defined(UNF)
-      */libultra_d.a:*.o(COMMON);
+       BUILD_DIR/src/audio*.o(.*bss*);
+ #ifdef S2DEX_TEXT_ENGINE
+       lib/libs2d_engine.a:*(.*bss*);
+       lib/libs2d_engine.a:*(COMMON);
+       lib/libs2d_engine.a:*(.scommon);
+ #endif
+ #if defined(ISVPRINT) || defined(UNF)
+       */libultra_d.a:*.o(COMMON);
       */libultra_d.a:*.o(.scommon);
       */libultra_d.a:*.o(.*bss*);
 #else

@@ -402,11 +402,11 @@ void stub_debug_control(void) {
 extern u8 NT_Testscene1[];
 #include "level_update.h"
 void try_print_debug_mario_object_info(void) {
-    if (gMarioState && gMarioObject) {
-        enable_time_stop();
-        set_mario_action(gMarioState, ACT_WAITING_FOR_DIALOG, 0);
-        NewText_Parse(NT_Testscene1);
-    }
+    // if (gMarioState && gMarioObject) {
+    //     enable_time_stop();
+    //     set_mario_action(gMarioState, ACT_WAITING_FOR_DIALOG, 0);
+    //     NewText_Parse(NT_Testscene1);
+    // }
 }
 
 /*

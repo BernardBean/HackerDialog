@@ -12,7 +12,7 @@ align left
 textpos top
 color 0 0 0 255
 
-keyboard "do you want sex?", myName
+keyboard "do you like anime?", myName
 
 compare myName, "yes", wantsSex, noSex
 

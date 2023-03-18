@@ -100,7 +100,7 @@ void draw_all_glyphs(S2DList *s) {
     S2DListNode *tmp = s->head;
 
     gDPPipeSync(gdl_head++);
-    gDPSetCycleType(gdl_head++, G_CYC_COPY);
+    gDPSetCycleType(gdl_head++, G_CYC_1CYCLE);
     gDPSetRenderMode(gdl_head++, G_RM_SPRITE, G_RM_SPRITE2);
 
     while (tmp != NULL) {
@@ -339,8 +339,11 @@ static int s2d_width(const char *str, int line, int len) {
                     width += TAB_WIDTH_V / TEX_RES;
                 break;
             default:
-                if (current_char != '\0' && curLine == line)
-                    width += s2d_kerning_table[(int) current_char] * scale;
+                if (current_char != '\0' && curLine == line) {
+                    char *tbl = segmented_to_virtual(s2d_kerning_table);
+
+                    width += tbl[(int) current_char] * scale;
+                }
         }
         if (*p == '\0') break;
         p++;

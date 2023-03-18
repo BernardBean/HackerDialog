@@ -31,7 +31,8 @@
 #define NT_MAKETEXTBOX 14
 #define NT_TEXTBOXPOS 15
 #define NT_COLOR 16
-#define NT_DONE 17
+#define NT_COMPARE 17
+#define NT_DONE 18
 
 #define left 0
 #define top 0
@@ -154,6 +155,19 @@
 
 .macro unskippable
     .byte NT_UNSKIPPABLE, 4, 0, 0
+.endm
+
+.macro compare var, comparestr, lblCorrect, lblWrong
+    .byte NT_COMPARE, 20, 0, 0
+    .word \var
+    .word NT_str_\@
+    .word \lblCorrect
+    .word \lblWrong
+    .section .rodata
+    .balign 4
+    NT_str_\@:
+        .asciiz "\comparestr"
+    .section .newtext
 .endm
 
 #else

@@ -365,6 +365,32 @@ void NT_RenderMenu(u8 *cursor) {
     }
 }
 
+
+static void str_tolower(u8 *dst, u8 *str) {
+    for (int i = 0; i < strlen(str); i++) {
+        if (str[i] >= 'A' && str[i] <= 'Z') {
+            dst[i] = str[i] + 32;
+        } else {
+            dst[i] = str[i];
+        }
+    }
+}
+void NewText_Compare(u8 *cursor) {
+    char *var = read_u32(cursor + 4);
+    char *compare = read_u32(cursor + 8);
+    char *labelCorrect = read_u32(cursor + 12);
+    char *labelWrong = read_u32(cursor + 16);
+
+    char buf1[50]; bzero(buf1, sizeof(buf1)); str_tolower(buf1, var);
+    char buf2[50]; bzero(buf2, sizeof(buf2)); str_tolower(buf2, compare);
+
+    if (strcmp(buf1, buf2) == 0) {
+        NewText_Cursor = labelCorrect;
+    } else {
+        NewText_Cursor = labelWrong;
+    }
+}
+
 u32 subStackPtr = 0;
 int NewText_Parse(u8 *scene) {
     if (NewText_Cursor == 0) {
@@ -504,6 +530,9 @@ int NewText_Parse(u8 *scene) {
                 NT_TextBuffer[NewText_TextCursor++] = CH_COLORSTACK;
             }
             proceed = 1;
+            break;
+        case NT_COMPARE:
+            NewText_Compare(NewText_Cursor);
             break;
     }
 

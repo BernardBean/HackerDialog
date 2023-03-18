@@ -34,7 +34,7 @@ u32 NewText_CurAlign = ALIGN_LEFT;
 u32 NewText_DrawingTB = FALSE;
 u32 NewText_CurrentColor = 0x000000FF;
 
-char myName[] = "SUPERMARIO";
+char myName[500];
 
 static u32 isUnskippable = FALSE;
 
@@ -451,11 +451,12 @@ int NewText_Parse(u8 *scene) {
         case NT_GO:
             NewText_Cursor = *(u32*)(NewText_Cursor + 4);
             break;
-        case NT_TURING:
+        case NT_TURING: {
             u32 fp = *(u32*)(NewText_Cursor + 4);
             if (((int (*)())fp)());
             proceed = 1;
             break;
+        }
         case NT_SOUND:
             play_sound(*(u32 *)(NewText_Cursor + 4), gGlobalSoundSource);
             proceed = 1;

@@ -52,7 +52,6 @@ pickC:
     say "Congratulations, "
     recall myName
     say "!"
-    recall myName
     go myTextEnd
 
 pickD:

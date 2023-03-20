@@ -12,23 +12,18 @@ align left
 textpos top
 color 0 0 0 255
 
-keyboard "do you like anime?", myName
+keyboard "Left or right door?", myName
 
-compare myName, "yes", wantsSex, noSex
+compare myName, "left", ld, rd
 
-
-wantsSex:
-say "Let's FUCKING go"
-wait 12
-say "!!!"
+ld:
+warp 0
 go myTextEnd
 
-noSex:
-say ":( :( :("
+rd:
+warp 1
 go myTextEnd
-
 
 myTextEnd:
-endsay
 endscene
 

@@ -2,6 +2,8 @@
 #include "newtext.h"
 #include "sounds.h"
 #include "game/game_init.h"
+#include "game/level_update.h"
+#include "game/area.h"
 #include "audio/external.h"
 #include "s2dex_text_engine/s2d_print.h"
 #include "s2dex_text_engine/s2d_ustdlib.h"
@@ -34,6 +36,8 @@ u32 NewText_CurAlign = ALIGN_LEFT;
 u32 NewText_DrawingTB = FALSE;
 u32 NewText_CurrentColor = 0x000000FF;
 
+int NewText_BufferWarpNode = -1;
+
 char myName[500];
 
 static u32 isUnskippable = FALSE;
@@ -42,9 +46,17 @@ static u32 read_u32(u8 *d) {
     return *(u32*)d;
 }
 
+void NT_StartWarp() {
+    sDelayedWarpTimer = 20;
+    sSourceWarpNodeId = NewText_BufferWarpNode;
+    sDelayedWarpOp = WARP_OP_WARP_OBJECT;
+    play_transition(WARP_TRANSITION_FADE_INTO_STAR, 20, 0, 0, 0);
+}
+
 u16 NT_ReadController() {
     return gPlayer1Controller->buttonPressed;
 }
+
 s8 NT_ReadStick() {
     return gPlayer1Controller->stickY;
 }
@@ -412,6 +424,12 @@ int NewText_Parse(u8 *scene) {
         subStackPtr = 0;
         s2d_colorstack_top = 0;
         NT_SkipToEnd = 0;
+
+        if (NewText_BufferWarpNode != -1) {
+            NT_StartWarp();
+            NewText_BufferWarpNode = -1;
+        }
+
         return 0;
     }
 
@@ -534,6 +552,10 @@ int NewText_Parse(u8 *scene) {
         case NT_COMPARE:
             NewText_Compare(NewText_Cursor);
             break;
+        case NT_WARP:
+            NewText_BufferWarpNode = NewText_Cursor[3];
+            proceed = 1;
+            break;
     }
 
     if (proceed) {
@@ -544,9 +566,9 @@ int NewText_Parse(u8 *scene) {
         NT_KeepText();
     }
 
-    char epic[100][30];
 
     // debug print the color stack
+    // char epic[100][30];
     // for (int i = 0; i < s2d_colorstack_top; i++) {
     //     sprintf(epic[i], "%X", s2d_colorstack[i]);
     //     NT_PrintFunc(20, 20 + (16 * i), epic[i]);

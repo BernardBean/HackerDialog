@@ -402,12 +402,24 @@ void stub_debug_control(void) {
 extern u8 NT_TestKeyboardScene[];
 #include "level_update.h"
 void try_print_debug_mario_object_info(void) {
-    // if (gMarioState && gMarioObject) {
-    //     enable_time_stop();
-    //     set_mario_action(gMarioState, ACT_WAITING_FOR_DIALOG, 0);
-    //     NewText_Parse(NT_TestKeyboardScene);
-    // }
+    static s32 done = 0;
+    static s32 talking = 0;
+
+    if (done == 1) {
+        return;
+    }
+    if (gMarioState && gMarioObject) {
+        if (NewText_Parse(NT_TestKeyboardScene) == 0) {
+            done = 1;
+        } else {
+            enable_time_stop();
+            set_mario_action(gMarioState, ACT_WAITING_FOR_DIALOG, 0);
+        }
+    }
+
+    print_text_fmt_int(50, 50, "D %d", done);
 }
+
 
 /*
  * Similar to above, but with level information. (checkinfo, mapinfo,

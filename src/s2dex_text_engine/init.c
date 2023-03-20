@@ -16,7 +16,7 @@ void s2d_stop(void) {
 	if (IS_RUNNING_ON_EMULATOR) {
 		gSPLoadUcode(gdl_head++, zex_text, zex_data);
 		if deinit_cond {
-			my_rdp_init();
+			// my_rdp_init();
 			my_rsp_init();
 		}
 	}

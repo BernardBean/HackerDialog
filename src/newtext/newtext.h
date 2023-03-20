@@ -32,7 +32,8 @@
 #define NT_TEXTBOXPOS 15
 #define NT_COLOR 16
 #define NT_COMPARE 17
-#define NT_DONE 18
+#define NT_WARP 18
+#define NT_DONE 19
 
 #define left 0
 #define top 0
@@ -168,6 +169,10 @@
     NT_str_\@:
         .asciiz "\comparestr"
     .section .newtext
+.endm
+
+.macro warp node
+    .byte NT_WARP, 4, 0, \node
 .endm
 
 #else
